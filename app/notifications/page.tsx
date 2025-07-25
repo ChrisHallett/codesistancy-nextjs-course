@@ -1,3 +1,4 @@
+/* eslint-disable @next/next/no-img-element */
 "use client";
 import {
   getNotifications,
@@ -42,6 +43,7 @@ function NotificationsPage() {
         if (unreadIds.length > 0) await markNotificationsAsRead(unreadIds);
       } catch (error) {
         toast.error("Failed to fetch notifications");
+        console.log("Failed to fetch notifications", error);
       } finally {
         setIsLoading(false);
       }

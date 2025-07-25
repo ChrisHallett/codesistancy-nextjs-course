@@ -1,3 +1,4 @@
+/* eslint-disable @next/next/no-img-element */
 "use client";
 
 import {
@@ -48,6 +49,7 @@ function PostCard({ post, dbUserId }: { post: Post; dbUserId: string | null }) {
     } catch (error) {
       setOptmisticLikes(post._count.likes);
       setHasLiked(post.likes.some((like) => like.userId === dbUserId));
+      console.log("Failed to like", error);
     } finally {
       setIsLiking(false);
     }
@@ -64,6 +66,7 @@ function PostCard({ post, dbUserId }: { post: Post; dbUserId: string | null }) {
       }
     } catch (error) {
       toast.error("Failed to add comment");
+      console.log("Failed to add comment", error);
     } finally {
       setIsCommenting(false);
     }
@@ -78,6 +81,7 @@ function PostCard({ post, dbUserId }: { post: Post; dbUserId: string | null }) {
       else throw new Error(result.error);
     } catch (error) {
       toast.error("Failed to delete post");
+      console.log("Failed to delete post", error);
     } finally {
       setIsDeleting(false);
     }
