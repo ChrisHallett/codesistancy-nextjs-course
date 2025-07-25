@@ -10,20 +10,21 @@ import { Button } from "./ui/button";
 import { ImageIcon, Loader2Icon, SendIcon } from "lucide-react";
 import { createPost } from "@/actions/post.action";
 import toast from "react-hot-toast";
+import ImageUpload from "./ImageUpload";
 
 function CreatePost() {
   const { user } = useUser();
   const [content, setContent] = useState("");
-  const [imgageUrl, setImageUrl] = useState("");
+  const [imageUrl, setImageUrl] = useState("");
   const [isPosting, setIsPosting] = useState(false);
   const [showImageUpload, setShowImageUpload] = useState(false);
 
   const handleSubmit = async () => {
-    if (!content.trim() && !imgageUrl) return;
+    if (!content.trim() && !imageUrl) return;
 
     setIsPosting(true);
     try {
-      const result = await createPost(content, imgageUrl);
+      const result = await createPost(content, imageUrl);
 
       if (result?.success) {
         //Reset the form
@@ -57,6 +58,20 @@ function CreatePost() {
               disabled={isPosting}
             ></Textarea>
           </div>
+
+          {(showImageUpload || imageUrl) && (
+            <div className="border rounded-lg p-4">
+              <ImageUpload
+                endpoint="imageUploader"
+                value={imageUrl}
+                onChange={(url) => {
+                  setImageUrl(url);
+                  if (!url) setShowImageUpload(false);
+                }}
+              ></ImageUpload>
+            </div>
+          )}
+
           <div className="flex items-center justify-between border-t pt-4">
             <div className="flex space-x-2">
               <Button
@@ -74,7 +89,7 @@ function CreatePost() {
             <Button
               className="flex items-center"
               onClick={handleSubmit}
-              disabled={(!content.trim() && !imgageUrl) || isPosting}
+              disabled={(!content.trim() && !imageUrl) || isPosting}
             >
               {isPosting ? (
                 <>
